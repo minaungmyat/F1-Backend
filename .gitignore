@@ -1,0 +1,5 @@
+﻿# Cache and temp files
+app/f1_cache/
+*.sqlite
+__pycache__/
+*.pyc

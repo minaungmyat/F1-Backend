@@ -1,0 +1,33 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        DEV: "true"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app
+      - f1_cache:/tmp/f1_cache # persistant cache storage
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: 1
+      DJANGO_SECRET_KEY: devsecretkey
+      DATABASE_URL: postgres://f1user:f1pass@db:5432/f1db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: f1db
+      POSTGRES_USER: f1user
+      POSTGRES_PASSWORD: f1pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data:
+  f1_cache:
